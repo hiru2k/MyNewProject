@@ -12,10 +12,11 @@ import com.facebook.react.config.ReactFeatureFlags;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactNativeHost;
 import com.facebook.soloader.SoLoader;
+import com.facebook.react.modules.art.ARTPackage;
 
 import expo.modules.ApplicationLifecycleDispatcher;
 import expo.modules.ReactNativeHostWrapper;
-
+import com.reactnativecommunity.rnpermissions.RNPermissionsPackage;
 import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
@@ -33,6 +34,10 @@ public class MainApplication extends Application implements ReactApplication {
         List<ReactPackage> packages = new PackageList(this).getPackages();
         // Packages that cannot be autolinked yet can be added manually here, for example:
         // packages.add(new MyReactNativePackage());
+        // Add RNPermissionsPackage manually
+        packages.add(new RNPermissionsPackage());
+        packages.add(new ARTPackage());
+        
         return packages;
       }
 
