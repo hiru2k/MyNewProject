@@ -76,7 +76,8 @@ const SinhalaWordDrawer = ({ route }) => {
   }, [startLoading]);
 
   const takePicture = async () => {
-    if (cameraRef) {
+    if (cameraRef.current) {
+      // Add null check here
       try {
         setShowProgressBar(true);
         setStartLoading(true);
@@ -95,6 +96,8 @@ const SinhalaWordDrawer = ({ route }) => {
       } catch (e) {
         console.log(e);
       }
+    } else {
+      console.log("Camera reference is null");
     }
   };
   const handleNextLevel = () => {

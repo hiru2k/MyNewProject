@@ -21,7 +21,7 @@ const SinhalaImageDrawer = ({ route }) => {
   const { word } = route.params ?? {};
   const navigation = useNavigation();
   const [isColored, setIsColored] = useState(false);
-  const [selectedColors, setSelectedColors] = useState([]);
+
   const [progress, setProgress] = useState(0);
   const [showProgressBar, setShowProgressBar] = useState(false);
   const [showNextLevelBtn, setShowNextLevelBtn] = useState(false);
@@ -29,7 +29,6 @@ const SinhalaImageDrawer = ({ route }) => {
   const toggleImageColor = () => {
     setIsColored(!isColored);
     checkProgress();
-    setSelectedColors([]);
   };
 
   const treeColors = [
@@ -56,16 +55,16 @@ const SinhalaImageDrawer = ({ route }) => {
   let colorsToDisplay;
   switch (word) {
     case "ගස":
-      selectedImage = isColored ? coloredTreeImage : emptyTreeImage;
-      colorsToDisplay = isColored ? greyColors : treeColors;
+      selectedImage = !isColored ? coloredTreeImage : emptyTreeImage;
+      colorsToDisplay = !isColored ? greyColors : treeColors;
       break;
     case "පූසා":
-      selectedImage = isColored ? coloredCatImage : emptyCatImage;
-      colorsToDisplay = isColored ? greyColors : catColors;
+      selectedImage = !isColored ? coloredCatImage : emptyCatImage;
+      colorsToDisplay = !isColored ? greyColors : catColors;
       break;
     default:
-      selectedImage = isColored ? coloredTreeImage : emptyTreeImage;
-      colorsToDisplay = isColored ? greyColors : treeColors;
+      selectedImage = !isColored ? coloredTreeImage : emptyTreeImage;
+      colorsToDisplay = !isColored ? greyColors : treeColors;
   }
 
   const checkProgress = () => {
@@ -126,6 +125,7 @@ const SinhalaImageDrawer = ({ route }) => {
               <Image style={styles.image} source={selectedImage} />
             </View>
           </TouchableWithoutFeedback>
+
           <ColorPalette colors={colorsToDisplay} totalColors={3} />
         </View>
       </View>

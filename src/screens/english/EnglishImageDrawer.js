@@ -45,16 +45,16 @@ const EnglishImageDrawer = ({ route }) => {
   let colorsToDisplay;
   switch (word) {
     case "tree":
-      selectedImage = isColored ? coloredTreeImage : emptyTreeImage;
-      colorsToDisplay = isColored ? greyColors : treeColors;
+      selectedImage = !isColored ? coloredTreeImage : emptyTreeImage;
+      colorsToDisplay = !isColored ? greyColors : treeColors;
       break;
     case "flower":
-      selectedImage = isColored ? flowerImage : emptyTreeImage;
-      colorsToDisplay = isColored ? greyColors : treeColors;
+      selectedImage = !isColored ? flowerImage : emptyTreeImage;
+      colorsToDisplay = !isColored ? greyColors : treeColors;
       break;
     default:
-      selectedImage = isColored ? coloredTreeImage : emptyTreeImage;
-      colorsToDisplay = isColored ? greyColors : treeColors;
+      selectedImage = !isColored ? coloredTreeImage : emptyTreeImage;
+      colorsToDisplay = !isColored ? greyColors : treeColors;
   }
 
   const checkProgress = () => {
