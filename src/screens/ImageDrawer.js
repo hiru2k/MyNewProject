@@ -13,12 +13,16 @@ import emptyTreeImage from "../assests/empty_tree.png";
 import coloredTreeImage from "../assests/colored_tree.png";
 import ProgressBar from "../components/ProgressBar";
 import ColorPalette from "../components/ColorPalette";
+import { useNavigation } from "@react-navigation/native";
 
 const ImageDrawer = ({ imageUrl }) => {
+  const navigation = useNavigation();
   const [isColored, setIsColored] = useState(false);
   const [selectedColors, setSelectedColors] = useState([]);
   const [progress, setProgress] = useState(0);
   const [showProgressBar, setShowProgressBar] = useState(false);
+  const [showNextLevelBtn, setShowNextLevelBtn] = useState(false);
+
   const toggleImageColor = () => {
     setIsColored(!isColored);
     setSelectedColors([]);
@@ -58,6 +62,7 @@ const ImageDrawer = ({ imageUrl }) => {
     const interval = setInterval(() => {
       setProgress((prevProgress) => {
         if (prevProgress >= 50) {
+          setShowNextLevelBtn(true);
           clearInterval(interval);
         }
         return prevProgress + 1; //1% for 1ms
@@ -71,15 +76,20 @@ const ImageDrawer = ({ imageUrl }) => {
     };
   }, []);
 
+  const handleNextLevel = () => {
+    // Navigate to the WordSelector page with different words for the next level round
+    navigation.navigate("WordSelector", { level: 2 }); // Pass level as a parameter if you want to display different words for different levels
+  };
+
   const progressBarStyles = StyleSheet.create({
     progressBarContainer: {
       backgroundColor: "#c3c3c3",
       height: 30,
       borderRadius: 10,
       marginBottom: 100,
-      marginTop: 60,
+      marginTop: 10,
       width: "80%",
-      marginLeft: 40,
+      alignSelf: "center",
     },
     progressBar: {
       height: "100%",
@@ -111,12 +121,20 @@ const ImageDrawer = ({ imageUrl }) => {
             style={styles.ProgressButton}
             onPress={checkProgress}
           >
-            <Text style={styles.title}>ප්රගතිය බලන්න</Text>
+            <Text style={styles.title}>ප්‍රගතිය බලන්න</Text>
           </TouchableOpacity>
         )}
       </View>
       {showProgressBar && (
         <ProgressBar percentage={progress} style={progressBarStyles} />
+      )}
+      {showNextLevelBtn && (
+        <TouchableOpacity
+          style={styles.nextLevelButton}
+          onPress={handleNextLevel}
+        >
+          <Text style={styles.buttonText}>ඊළඟ මට්ටම</Text>
+        </TouchableOpacity>
       )}
     </ImageBackground>
   );
@@ -128,12 +146,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginTop: 50,
     alignItems: "center",
-    marginTop: 80,
+    marginTop: 120,
     justifyContent: "space-between",
   },
   image: {
     width: 300,
     height: 370,
+    marginLeft: 20,
   },
   BackgroundImage: {
     width: "100%",
@@ -147,11 +166,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 20,
-    marginLeft: 80,
+    alignSelf: "center",
   },
   title: {
     color: "white",
     fontSize: 20,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 18,
+    textAlign: "center",
+  },
+  nextLevelButton: {
+    marginTop: -70,
+    backgroundColor: "black",
+    padding: 13,
+    borderRadius: 10,
+    alignSelf: "center",
   },
 });
 
