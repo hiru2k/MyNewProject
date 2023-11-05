@@ -9,13 +9,13 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
 } from "react-native";
-import emptyTreeImage from "../assests/empty_tree.png";
-import coloredTreeImage from "../assests/colored_tree.png";
-import ProgressBar from "../components/ProgressBar";
-import ColorPalette from "../components/ColorPalette";
+import emptyTreeImage from "../../assets/empty_tree.png";
+import coloredTreeImage from "../../assets/colored_tree.png";
+import ProgressBar from "../../components/ProgressBar";
+import ColorPalette from "../../components/ColorPalette";
 import { useNavigation } from "@react-navigation/native";
 
-const ImageDrawer = ({ imageUrl }) => {
+const SinhalaImageDrawer = ({ imageUrl }) => {
   const navigation = useNavigation();
   const [isColored, setIsColored] = useState(false);
   const [selectedColors, setSelectedColors] = useState([]);
@@ -78,8 +78,7 @@ const ImageDrawer = ({ imageUrl }) => {
   }, []);
 
   const handleNextLevel = () => {
-    // Navigate to the WordSelector page with different words for the next level round
-    navigation.navigate("WordSelector", { level: 2 }); // Pass level as a parameter if you want to display different words for different levels
+    navigation.navigate("SinhalaWordSelector", { level: 2 });
   };
 
   const progressBarStyles = StyleSheet.create({
@@ -95,7 +94,7 @@ const ImageDrawer = ({ imageUrl }) => {
     progressBar: {
       height: "100%",
       borderRadius: 10,
-      backgroundColor: "#0ed145", // Green color for the progress bar
+      backgroundColor: "#0ed145",
     },
     progressText: {
       fontSize: 20,
@@ -105,7 +104,7 @@ const ImageDrawer = ({ imageUrl }) => {
   });
   return (
     <ImageBackground
-      source={require("../assests/background.png")}
+      source={require("../../assets/background.png")}
       style={styles.BackgroundImage}
     >
       <View style={styles.overlay}>
@@ -179,4 +178,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ImageDrawer;
+export default SinhalaImageDrawer;

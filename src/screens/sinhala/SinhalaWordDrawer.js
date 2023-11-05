@@ -9,11 +9,11 @@ import {
 } from "react-native";
 import { Camera } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
-import CameraButton from "../components/CameraButton";
-import ProgressBar from "../components/ProgressBar";
+import CameraButton from "../../components/CameraButton";
+import ProgressBar from "../../components/ProgressBar";
 import { useNavigation } from "@react-navigation/native";
 
-const TreeAnimation = () => {
+const SinhalaWordDrawer = () => {
   const [displayedLetters, setDisplayedLetters] = useState("");
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [image, setImage] = useState(null);
@@ -26,7 +26,7 @@ const TreeAnimation = () => {
   const navigation = useNavigation();
 
   const cameraRef = useRef(null);
-  const word = "TREE";
+  const word = "ගස";
 
   useEffect(() => {
     let mounted = true;
@@ -98,8 +98,7 @@ const TreeAnimation = () => {
     }
   };
   const handleNextLevel = () => {
-    // Navigate to the WordSelector page with different words for the next level round
-    navigation.navigate("ImageDrawer"); // Pass level as a parameter if you want to display different words for different levels
+    navigation.navigate("SinhalaImageDrawer");
   };
 
   const progressBarStyles = StyleSheet.create({
@@ -126,7 +125,7 @@ const TreeAnimation = () => {
 
   return (
     <ImageBackground
-      source={require("../assests/background.png")}
+      source={require("../../assets/background.png")}
       style={styles.backgroundImg}
     >
       <View style={styles.overlay}>
@@ -159,7 +158,7 @@ const TreeAnimation = () => {
           style={styles.nextStepButton}
           onPress={handleNextLevel}
         >
-          <Text style={styles.buttonText}>ඊළඟ මට්ටම</Text>
+          <Text style={styles.buttonText}>ඊළඟ පියවර</Text>
         </TouchableOpacity>
       )}
     </ImageBackground>
@@ -216,4 +215,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TreeAnimation;
+export default SinhalaWordDrawer;

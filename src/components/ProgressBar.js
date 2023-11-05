@@ -11,7 +11,15 @@ const ProgressBar = ({ percentage, style }) => {
           style.progressBar,
         ]}
       />
-      <Text style={[styles.progressText, style.progressText]}>
+      <Text
+        style={[
+          styles.progressText,
+          style.progressText,
+          {
+            left: `${percentage}%`, // Set the left position based on the progress
+          },
+        ]}
+      >
         {percentage}%
       </Text>
     </View>
@@ -28,7 +36,7 @@ const styles = StyleSheet.create({
   progressBar: {
     height: "100%",
     borderRadius: 10,
-    backgroundColor: "#0ed145", // Green color for the progress bar
+    backgroundColor: "#0ed145",
   },
   progressText: {
     fontSize: 20,

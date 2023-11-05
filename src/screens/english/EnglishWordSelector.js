@@ -7,10 +7,10 @@ import {
   ImageBackground,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
-import ProgressBar from "../components/ProgressBar";
+import ProgressBar from "../../components/ProgressBar";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
-const WordSelector = ({ route }) => {
+const EnglishWordSelector = ({ route }) => {
   const navigation = useNavigation();
   const { level } = route.params ?? { level: 1 };
   const [selectedWord, setSelectedWord] = useState(null);
@@ -18,8 +18,8 @@ const WordSelector = ({ route }) => {
   const [showProgressBar, setShowProgressBar] = useState(false);
   const [showNextLevelBtn, setShowNextLevelBtn] = useState(false);
   const wordSets = {
-    1: ["ගස", "මල", "බල්ලා", "පොත", "පෑන", "හාවා", "ඉර", "ගෙදර", "ඇපල්"],
-    2: ["සුන්", "නිවාඩු", "හැටි", "නිල්", "ගම", "දිව", "දුෂ්", "කුස", "පැණි"],
+    1: ["Tree", "Flower", "Book", "Pen", "Rabbit", "Sun", "Cat"],
+    2: ["Apple", "Dog", "Home", "Child", "Car", "Rainbow", "Bus"],
   };
   const words = wordSets[level] || [];
 
@@ -63,7 +63,7 @@ const WordSelector = ({ route }) => {
   }, []);
 
   const handleNextLevel = () => {
-    navigation.navigate("WordDrawer");
+    navigation.navigate("EnglishWordDrawer");
   };
 
   const progressBarStyles = StyleSheet.create({
@@ -89,7 +89,7 @@ const WordSelector = ({ route }) => {
 
   return (
     <ImageBackground
-      source={require("../assests/background.png")}
+      source={require("../../assets/background.png")}
       style={styles.backgroundImage}
     >
       <View style={styles.container}>
@@ -132,7 +132,7 @@ const WordSelector = ({ route }) => {
           style={styles.nextStepButton}
           onPress={handleNextLevel}
         >
-          <Text style={styles.buttonText}>ඊළඟ පියවර</Text>
+          <Text style={styles.buttonText}>Next step</Text>
         </TouchableOpacity>
       )}
     </ImageBackground>
@@ -229,4 +229,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WordSelector;
+export default EnglishWordSelector;
