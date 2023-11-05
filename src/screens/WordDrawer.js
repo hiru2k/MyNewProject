@@ -1,9 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
-import { StyleSheet, Text, View, Image, ImageBackground } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ImageBackground,
+  TouchableOpacity,
+} from "react-native";
 import { Camera } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
 import CameraButton from "../components/CameraButton";
 import ProgressBar from "../components/ProgressBar";
+import { useNavigation } from "@react-navigation/native";
 
 const TreeAnimation = () => {
   const [displayedLetters, setDisplayedLetters] = useState("");
@@ -13,19 +21,29 @@ const TreeAnimation = () => {
   const [flash, setFlash] = useState(Camera.Constants.FlashMode.off);
   const [progress, setProgress] = useState(0);
   const [showProgressBar, setShowProgressBar] = useState(false);
+  const [startLoading, setStartLoading] = useState(false);
+  const [showNextLevelBtn, setShowNextLevelBtn] = useState(false);
+  const navigation = useNavigation();
 
   const cameraRef = useRef(null);
   const word = "TREE";
 
   useEffect(() => {
+    let mounted = true;
+
     (async () => {
       MediaLibrary.requestPermissionsAsync();
       const cameraStatus = await Camera.requestCameraPermissionsAsync();
-      setHasCameraPermission(cameraStatus.status === "granted");
+      if (mounted) setHasCameraPermission(cameraStatus.status === "granted");
     })();
 
     let index = 0;
     const textInterval = setInterval(() => {
+      if (!mounted) {
+        clearInterval(textInterval);
+        return;
+      }
+
       setDisplayedLetters((prev) => prev + word[index]);
       index++;
       if (index === word.length) {
@@ -34,33 +52,54 @@ const TreeAnimation = () => {
     }, 1000);
 
     return () => {
-      clearInterval(interval);
+      clearInterval(textInterval);
+      mounted = false;
     };
   }, []);
+
+  useEffect(() => {
+    if (!startLoading) return;
+
+    const progressBarInterval = setInterval(() => {
+      setProgress((prevProgress) => {
+        if (prevProgress >= 50) {
+          clearInterval(progressBarInterval);
+          setShowNextLevelBtn(true);
+        }
+        return prevProgress + 1; // 1% for 1ms
+      });
+    }, 20);
+
+    return () => {
+      clearInterval(progressBarInterval);
+    };
+  }, [startLoading]);
 
   const takePicture = async () => {
     if (cameraRef) {
       try {
-        setShowProgressBar(true); // Show progress bar when capturing a picture
-
+        setShowProgressBar(true);
+        setStartLoading(true);
         const data = await cameraRef.current.takePictureAsync();
         console.log(data);
         setImage(data.uri);
 
-        // Simulate progress update every second
         const interval = setInterval(() => {
           setProgress((prevProgress) => {
             if (prevProgress >= 50) {
               clearInterval(interval);
-              // Hide progress bar after reaching 50%
             }
-            return prevProgress + 1; //1% for 1ms
+            return prevProgress + 1;
           });
-        }, 20); // Update every 20ms for a smoother animation
+        }, 20);
       } catch (e) {
         console.log(e);
       }
     }
+  };
+  const handleNextLevel = () => {
+    // Navigate to the WordSelector page with different words for the next level round
+    navigation.navigate("ImageDrawer"); // Pass level as a parameter if you want to display different words for different levels
   };
 
   const progressBarStyles = StyleSheet.create({
@@ -69,14 +108,14 @@ const TreeAnimation = () => {
       height: 30,
       borderRadius: 10,
       marginBottom: 100,
-      marginTop: 60,
+      marginTop: 50,
       width: "80%",
       marginLeft: 40,
     },
     progressBar: {
       height: "100%",
       borderRadius: 10,
-      backgroundColor: "#0ed145", // Green color for the progress bar
+      backgroundColor: "#0ed145",
     },
     progressText: {
       fontSize: 20,
@@ -115,14 +154,23 @@ const TreeAnimation = () => {
       {showProgressBar && (
         <ProgressBar percentage={progress} style={progressBarStyles} />
       )}
+      {showNextLevelBtn && (
+        <TouchableOpacity
+          style={styles.nextStepButton}
+          onPress={handleNextLevel}
+        >
+          <Text style={styles.buttonText}>ඊළඟ මට්ටම</Text>
+        </TouchableOpacity>
+      )}
     </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    display: "flex",
     justifyContent: "center",
+    marginTop: -100,
   },
   letter: {
     fontSize: 40,
@@ -132,18 +180,16 @@ const styles = StyleSheet.create({
     marginLeft: 150,
   },
   camera: {
-    flex: 1,
     borderRadius: 20,
     marginTop: 10,
     marginBottom: 200,
     margin: 20,
-    height: 100,
+    height: 300,
   },
   cameraImg: {
-    flex: 1,
-    height: 100,
-    marginTop: 50,
-    marginBottom: 10,
+    height: 300,
+    marginTop: -90,
+
     margin: 20,
   },
   backgroundImg: {
@@ -152,11 +198,21 @@ const styles = StyleSheet.create({
     height: "100%",
     alignContent: "center",
   },
-  overlay: {
-    flex: 1,
-  },
+
   customProgressBar: {
-    marginLeft: 1000, // Set your desired marginLeft here
+    marginLeft: 1000,
+  },
+  nextStepButton: {
+    marginTop: 50,
+    backgroundColor: "black",
+    padding: 13,
+    borderRadius: 10,
+    alignSelf: "center",
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 18,
+    textAlign: "center",
   },
 });
 
