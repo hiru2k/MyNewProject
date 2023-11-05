@@ -7,15 +7,31 @@ import {
   ImageBackground,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
-import ProgressBar from "../components/ProgressBar"; // Import ProgressBar from separate file
+import ProgressBar from "../components/ProgressBar";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
-const words = ["ගස", "මල", "බල්ලා", "පොත", "පෑන", "හාවා", "ඉර", "ගෙදර", "ඇපල්"];
-
-const WordSelector = () => {
+const WordSelector = ({ route }) => {
+  const navigation = useNavigation();
+  const { level } = route.params ?? { level: 1 };
   const [selectedWord, setSelectedWord] = useState(null);
   const [progress, setProgress] = useState(0);
   const [showProgressBar, setShowProgressBar] = useState(false);
+  const [showNextLevelBtn, setShowNextLevelBtn] = useState(false);
+  const wordSets = {
+    1: ["ගස", "මල", "බල්ලා", "පොත", "පෑන", "හාවා", "ඉර", "ගෙදර", "ඇපල්"],
+    2: ["සුන්", "නිවාඩු", "හැටි", "නිල්", "ගම", "දිව", "දුෂ්", "කුස", "පැණි"],
+  };
+  const words = wordSets[level] || [];
 
+  useFocusEffect(
+    //when the screen is rendered , assign initial values to the states
+    React.useCallback(() => {
+      setSelectedWord(null);
+      setProgress(0);
+      setShowProgressBar(false);
+      setShowNextLevelBtn(false);
+    }, [])
+  );
   const handleWordPress = (word) => {
     setSelectedWord(word);
   };
@@ -29,10 +45,10 @@ const WordSelector = () => {
 
     setShowProgressBar(true);
 
-    // Simulate progress update every second
     const interval = setInterval(() => {
       setProgress((prevProgress) => {
         if (prevProgress >= 50) {
+          setShowNextLevelBtn(true);
           clearInterval(interval);
         }
         return prevProgress + 1; //1% for 1ms
@@ -42,10 +58,13 @@ const WordSelector = () => {
 
   useEffect(() => {
     return () => {
-      // Clean up the interval when the component unmounts
       clearInterval(interval);
     };
   }, []);
+
+  const handleNextLevel = () => {
+    navigation.navigate("WordDrawer");
+  };
 
   const progressBarStyles = StyleSheet.create({
     progressBarContainer: {
@@ -59,7 +78,7 @@ const WordSelector = () => {
     progressBar: {
       height: "100%",
       borderRadius: 10,
-      backgroundColor: "#0ed145", // Green color for the progress bar
+      backgroundColor: "#0ed145",
     },
     progressText: {
       fontSize: 20,
@@ -73,43 +92,49 @@ const WordSelector = () => {
       source={require("../assests/background.png")}
       style={styles.backgroundImage}
     >
-      <View style={styles.overlay}>
-        <View style={styles.container}>
-          <View style={styles.wordBox}>
-            {words.map((word) => (
-              <TouchableOpacity
-                key={word}
-                style={[
-                  styles.wordButton,
-                  {
-                    backgroundColor: selectedWord === word ? "yellow" : "white",
-                  },
-                ]}
-                onPress={() => handleWordPress(word)}
-              >
-                <Text style={styles.wordText}>{word}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-          <View style={styles.btnPlayBox}>
+      <View style={styles.container}>
+        <View style={styles.wordBox}>
+          {words.map((word) => (
             <TouchableOpacity
-              style={styles.playButton}
-              onPress={handlePlayButtonPress}
+              key={word}
+              style={[
+                styles.wordButton,
+                {
+                  backgroundColor: selectedWord === word ? "yellow" : "white",
+                },
+              ]}
+              onPress={() => handleWordPress(word)}
             >
-              <Icon name="play" size={30} color="white" />
+              <Text style={styles.wordText}>{word}</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.micButton}
-              onPress={handleMicButtonPress}
-            >
-              <Icon name="microphone" size={30} color="white" />
-            </TouchableOpacity>
-          </View>
-          {showProgressBar && (
-            <ProgressBar percentage={progress} style={progressBarStyles} />
-          )}
+          ))}
         </View>
+        <View style={styles.btnPlayBox}>
+          <TouchableOpacity
+            style={styles.playButton}
+            onPress={handlePlayButtonPress}
+          >
+            <Icon name="play" size={30} color="white" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.micButton}
+            onPress={handleMicButtonPress}
+          >
+            <Icon name="microphone" size={30} color="white" />
+          </TouchableOpacity>
+        </View>
+        {showProgressBar && (
+          <ProgressBar percentage={progress} style={progressBarStyles} />
+        )}
       </View>
+      {showNextLevelBtn && (
+        <TouchableOpacity
+          style={styles.nextStepButton}
+          onPress={handleNextLevel}
+        >
+          <Text style={styles.buttonText}>ඊළඟ පියවර</Text>
+        </TouchableOpacity>
+      )}
     </ImageBackground>
   );
 };
@@ -187,6 +212,20 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "black",
     fontWeight: "bold",
+  },
+  nextStepButton: {
+    marginTop: -70,
+    backgroundColor: "black",
+    padding: 13,
+    borderRadius: 10,
+    alignSelf: "center",
+    color: "white",
+    fontColor: "white",
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 18,
+    textAlign: "center",
   },
 });
 
