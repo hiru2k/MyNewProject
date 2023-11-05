@@ -25,6 +25,7 @@ const ImageDrawer = ({ imageUrl }) => {
 
   const toggleImageColor = () => {
     setIsColored(!isColored);
+    checkProgress();
     setSelectedColors([]);
   };
 
@@ -116,19 +117,11 @@ const ImageDrawer = ({ imageUrl }) => {
           </TouchableWithoutFeedback>
           <ColorPalette colors={colorsToDisplay} totalColors={3} />
         </View>
-        {isColored && (
-          <TouchableOpacity
-            style={styles.ProgressButton}
-            onPress={checkProgress}
-          >
-            <Text style={styles.title}>ප්‍රගතිය බලන්න</Text>
-          </TouchableOpacity>
-        )}
       </View>
-      {showProgressBar && (
+      {showProgressBar && isColored && (
         <ProgressBar percentage={progress} style={progressBarStyles} />
       )}
-      {showNextLevelBtn && (
+      {showNextLevelBtn && isColored && (
         <TouchableOpacity
           style={styles.nextLevelButton}
           onPress={handleNextLevel}
@@ -165,7 +158,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 20,
+    marginTop: 10,
     alignSelf: "center",
   },
   title: {
