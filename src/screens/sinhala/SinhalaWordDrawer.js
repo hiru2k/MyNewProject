@@ -13,7 +13,8 @@ import CameraButton from "../../components/CameraButton";
 import ProgressBar from "../../components/ProgressBar";
 import { useNavigation } from "@react-navigation/native";
 
-const SinhalaWordDrawer = () => {
+const SinhalaWordDrawer = ({ route }) => {
+  const { word } = route.params ?? {};
   const [displayedLetters, setDisplayedLetters] = useState("");
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [image, setImage] = useState(null);
@@ -26,7 +27,6 @@ const SinhalaWordDrawer = () => {
   const navigation = useNavigation();
 
   const cameraRef = useRef(null);
-  const word = "ගස";
 
   useEffect(() => {
     let mounted = true;
@@ -98,7 +98,7 @@ const SinhalaWordDrawer = () => {
     }
   };
   const handleNextLevel = () => {
-    navigation.navigate("SinhalaImageDrawer");
+    navigation.navigate("SinhalaImageDrawer", { word: word });
   };
 
   const progressBarStyles = StyleSheet.create({
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
     margin: 10,
     marginTop: 150,
     color: "black",
-    marginLeft: 150,
+    alignSelf: "center",
   },
   camera: {
     borderRadius: 20,

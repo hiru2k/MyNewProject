@@ -11,11 +11,14 @@ import {
 } from "react-native";
 import emptyTreeImage from "../../assets/empty_tree.png";
 import coloredTreeImage from "../../assets/colored_tree.png";
+import emptyCatImage from "../../assets/empty_cat.png";
+import coloredCatImage from "../../assets/colored_cat.png";
 import ProgressBar from "../../components/ProgressBar";
 import ColorPalette from "../../components/ColorPalette";
 import { useNavigation } from "@react-navigation/native";
 
-const SinhalaImageDrawer = ({ imageUrl }) => {
+const SinhalaImageDrawer = ({ route }) => {
+  const { word } = route.params ?? {};
   const navigation = useNavigation();
   const [isColored, setIsColored] = useState(false);
   const [selectedColors, setSelectedColors] = useState([]);
@@ -38,18 +41,27 @@ const SinhalaImageDrawer = ({ imageUrl }) => {
     "grey",
     "grey",
   ];
+  const catColors = [
+    "#fff200",
+    "#c3c3c3",
+    "#000000",
+    "#ffaec8",
+    "#88001b",
+    "grey",
+    "grey",
+  ];
   const greyColors = ["grey", "grey", "grey", "grey", "grey", "grey", "grey"];
 
   let selectedImage;
   let colorsToDisplay;
-  switch (imageUrl) {
-    case "tree":
+  switch (word) {
+    case "ගස":
       selectedImage = isColored ? coloredTreeImage : emptyTreeImage;
       colorsToDisplay = isColored ? greyColors : treeColors;
       break;
-    case "flower":
-      selectedImage = isColored ? flowerImage : emptyTreeImage;
-      colorsToDisplay = isColored ? greyColors : treeColors;
+    case "පූසා":
+      selectedImage = isColored ? coloredCatImage : emptyCatImage;
+      colorsToDisplay = isColored ? greyColors : catColors;
       break;
     default:
       selectedImage = isColored ? coloredTreeImage : emptyTreeImage;

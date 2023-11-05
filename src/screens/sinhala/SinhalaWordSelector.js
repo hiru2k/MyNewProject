@@ -62,8 +62,8 @@ const SinhalaWordSelector = ({ route }) => {
     };
   }, []);
 
-  const handleNextLevel = () => {
-    navigation.navigate("SinhalaWordDrawer");
+  const handleNextStep = () => {
+    navigation.navigate("SinhalaWordDrawer", { word: selectedWord });
   };
 
   const progressBarStyles = StyleSheet.create({
@@ -130,7 +130,7 @@ const SinhalaWordSelector = ({ route }) => {
       {showNextLevelBtn && (
         <TouchableOpacity
           style={styles.nextStepButton}
-          onPress={handleNextLevel}
+          onPress={handleNextStep}
         >
           <Text style={styles.buttonText}>ඊළඟ පියවර</Text>
         </TouchableOpacity>

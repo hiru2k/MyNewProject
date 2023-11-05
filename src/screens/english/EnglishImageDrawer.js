@@ -15,7 +15,8 @@ import ProgressBar from "../../components/ProgressBar";
 import ColorPalette from "../../components/ColorPalette";
 import { useNavigation } from "@react-navigation/native";
 
-const EnglishImageDrawer = ({ imageUrl }) => {
+const EnglishImageDrawer = ({ route }) => {
+  const { word } = route.params ?? {};
   const navigation = useNavigation();
   const [isColored, setIsColored] = useState(false);
   const [selectedColors, setSelectedColors] = useState([]);
@@ -42,7 +43,7 @@ const EnglishImageDrawer = ({ imageUrl }) => {
 
   let selectedImage;
   let colorsToDisplay;
-  switch (imageUrl) {
+  switch (word) {
     case "tree":
       selectedImage = isColored ? coloredTreeImage : emptyTreeImage;
       colorsToDisplay = isColored ? greyColors : treeColors;

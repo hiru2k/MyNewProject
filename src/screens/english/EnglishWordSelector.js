@@ -63,7 +63,7 @@ const EnglishWordSelector = ({ route }) => {
   }, []);
 
   const handleNextLevel = () => {
-    navigation.navigate("EnglishWordDrawer");
+    navigation.navigate("EnglishWordDrawer", { word: selectedWord });
   };
 
   const progressBarStyles = StyleSheet.create({

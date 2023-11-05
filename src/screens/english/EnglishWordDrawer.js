@@ -13,7 +13,8 @@ import CameraButton from "../../components/CameraButton";
 import ProgressBar from "../../components/ProgressBar";
 import { useNavigation } from "@react-navigation/native";
 
-const EnglishWordDrawer = () => {
+const EnglishWordDrawer = ({ route }) => {
+  const { word } = route.params ?? {};
   const [displayedLetters, setDisplayedLetters] = useState("");
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [image, setImage] = useState(null);
@@ -26,7 +27,6 @@ const EnglishWordDrawer = () => {
   const navigation = useNavigation();
 
   const cameraRef = useRef(null);
-  const word = "TREE";
 
   useEffect(() => {
     let mounted = true;
@@ -99,7 +99,7 @@ const EnglishWordDrawer = () => {
   };
   const handleNextLevel = () => {
     // Navigate to the WordSelector page with different words for the next level round
-    navigation.navigate("EnglishImageDrawer"); // Pass level as a parameter if you want to display different words for different levels
+    navigation.navigate("EnglishImageDrawer", { word: word }); // Pass level as a parameter if you want to display different words for different levels
   };
 
   const progressBarStyles = StyleSheet.create({
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
     margin: 10,
     marginTop: 150,
     color: "black",
-    marginLeft: 150,
+    alignSelf: "center",
   },
   camera: {
     borderRadius: 20,
