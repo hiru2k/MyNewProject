@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   nextLevelButton: {
-    marginTop: -70,
+    marginTop: -30,
     backgroundColor: "black",
     padding: 13,
     borderRadius: 10,

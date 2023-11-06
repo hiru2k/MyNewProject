@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   nextStepButton: {
-    marginTop: -70,
+    marginTop: -90,
     backgroundColor: "black",
     padding: 13,
     borderRadius: 10,

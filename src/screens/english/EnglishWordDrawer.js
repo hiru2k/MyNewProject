@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
     marginLeft: 1000,
   },
   nextStepButton: {
-    marginTop: 50,
+    marginTop: 60,
     backgroundColor: "black",
     padding: 13,
     borderRadius: 10,
