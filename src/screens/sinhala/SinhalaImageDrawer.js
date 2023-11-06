@@ -55,16 +55,16 @@ const SinhalaImageDrawer = ({ route }) => {
   let colorsToDisplay;
   switch (word) {
     case "ගස":
-      selectedImage = !isColored ? coloredTreeImage : emptyTreeImage;
-      colorsToDisplay = !isColored ? greyColors : treeColors;
+      selectedImage = isColored ? coloredTreeImage : emptyTreeImage;
+      colorsToDisplay = isColored ? greyColors : treeColors;
       break;
     case "පූසා":
-      selectedImage = !isColored ? coloredCatImage : emptyCatImage;
-      colorsToDisplay = !isColored ? greyColors : catColors;
+      selectedImage = isColored ? coloredCatImage : emptyCatImage;
+      colorsToDisplay = isColored ? greyColors : catColors;
       break;
     default:
-      selectedImage = !isColored ? coloredTreeImage : emptyTreeImage;
-      colorsToDisplay = !isColored ? greyColors : treeColors;
+      selectedImage = isColored ? coloredTreeImage : emptyTreeImage;
+      colorsToDisplay = isColored ? greyColors : treeColors;
   }
 
   const checkProgress = () => {
